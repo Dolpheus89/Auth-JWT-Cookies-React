@@ -127,99 +127,113 @@ Ton server devrait ressembler a ceci pour le moment !
    - `initDB()` est appelé pour s'assurer que la table SQL est créée à chaque démarrage du serveur.
    - Vous pourrez ensuite visualiser la table en ouvrant le fichier `LoginChicks.sqlite`.
 
+---
 
-   ## Inscription : Les nouveaux utilisateurs peuvent s'inscrire en créant un compte avec un nom d'utilisateur et un mot de passe.
+## Inscription : Les nouveaux utilisateurs peuvent s'inscrire en créant un compte avec un nom d'utilisateur et un mot de passe.
 
-   1 // Creer le model 
+1. **Créer le modèle** : Créez un modèle d'utilisateur dans la base de données avec des champs pour le nom d'utilisateur et le mot de passe. Le mot de passe doit être stocké sous forme de hachage sécurisé.
+   
+2. **Controllers** : Créez un contrôleur qui gère la logique d'inscription. Il doit vérifier si l'utilisateur existe déjà, puis enregistrer le nouvel utilisateur avec un mot de passe hashé.
 
-   2 // Controllers
+3. **Routes** : Créez une route POST `/register` pour permettre aux nouveaux utilisateurs de s'inscrire via un formulaire.
 
-   3 // Routes
+4. **Tester la requête HTTP** : Utilisez un outil comme `curl` ou Postman pour envoyer une requête HTTP POST à la route `/register` et vérifier que l'inscription fonctionne.
 
-   4 // Test requete http
+5. **Connexion au Frontend** : Intégrez l'inscription au frontend React avec un formulaire d'inscription, puis faites une requête POST à l'API lorsque le formulaire est soumis.
 
-   5 // Conexion au Front   
+---
+
+## Connexion : Les utilisateurs enregistrés peuvent se connecter en fournissant leurs informations d'identification.
+
+1. **Controllers** : Créez un contrôleur qui gère la connexion. Il doit vérifier que l'utilisateur existe et que le mot de passe est correct en le comparant au mot de passe hashé.
+
+2. **Routes** : Créez une route POST `/login` pour permettre aux utilisateurs de se connecter.
+
+3. **Connexion au Frontend** : Dans le frontend, créez un formulaire de connexion qui envoie une requête POST à l'API. Si la connexion est réussie, stockez le token JWT dans un cookie sécurisé.
+
+---
+
+## Authentification JWT : Les utilisateurs reçoivent un token JWT sécurisé stocké dans un cookie.
+
+1. **Ajouter JWT dans le contrôleur login** : Une fois que l'utilisateur est authentifié, générez un token JWT et stockez-le dans un cookie sécurisé. Ce cookie sera utilisé pour l'authentification dans les routes protégées.
+
+2. **Cookie options** : Utilisez des options sécurisées pour les cookies comme `httpOnly`, `secure` et `sameSite` :
+   - `httpOnly:` : Empêche JavaScript d'accéder au cookie pour plus de sécurité.
+   - `secure:` : Utilisez cette option en production pour s'assurer que le cookie est transmis uniquement via HTTPS.
+   - `sameSite:` : Empêche le partage des cookies avec d'autres sites, pour limiter les attaques CSRF.
 
 
+---
 
-   ## Connexion : Les utilisateurs enregistrés peuvent se connecter en fournissant leurs informations d'identification.
+## Pages protégées : Certaines pages ne sont accessibles qu'aux utilisateurs authentifiés.
 
-   2 // Controllers
+1. **Frontend : ProtectedRoute** : Utilisez un composant `ProtectedRoute` dans React pour vérifier si l'utilisateur est authentifié avant d'afficher une page protégée. Faites une requête à votre backend pour vérifier si le token JWT est valide en utilisant les cookies.
 
+   <details>
+   <summary>Voir le code</summary>
 
-   a quoi sert 
+   ```javascript
+    import { useEffect, useState } from 'react';
+    import { Navigate } from 'react-router-dom';
+    import axios from 'axios';
 
-    httpOnly: true,
-    secure: true, // Utiliser secure: true en production (HTTPS requis)
-    sameSite: 'Strict',
+    export default function ProtectedRoute ({ children })  {
+        const [isAuthenticated, setIsAuthenticated] = useState(null);
 
-   3 // Routes
+        useEffect(() => {
+            const checkAuth = async () => {
+                try {
+                    const response = await axios.get('http://localhost:5000/api/auth/protected', {
+                        withCredentials: true, 
+                    });
 
-   5 // Conexion au Front   
-
-
-   ## Authentification JWT : Les utilisateurs reçoivent un token JWT sécurisé stocké dans un cookie.
-
-   1 ajout jwt dans le controller login
-
-   ## Pages protégées : Certaines pages ne sont accessibles qu'aux utilisateurs authentifiés.
-
-   front components protectedRoute 
-
-import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import axios from 'axios';
-
-export default function ProtectedRoute ({ children })  {
-    const [isAuthenticated, setIsAuthenticated] = useState(null);
-
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/api/auth/protected', {
-                    withCredentials: true, 
-                });
-
-                
-                if (response.status === 200) {
-                    setIsAuthenticated(true);
-                } else {
-                    setIsAuthenticated(false);
+                    
+                    if (response.status === 200) {
+                        setIsAuthenticated(true);
+                    } else {
+                        setIsAuthenticated(false);
+                    }
+                } catch (error) {
+                    console.error('Error during authentication check:', error);
+                    setIsAuthenticated(false); 
                 }
-            } catch (error) {
-                console.error('Error during authentication check:', error);
-                setIsAuthenticated(false); 
-            }
-        };
+            };
 
-        checkAuth();
-    }, []);
+            checkAuth();
+        }, []);
 
-  
-    if (isAuthenticated === null) {
-        return <div>Loading...</div>;
-    }
+    
+        if (isAuthenticated === null) {
+            return <div>Loading...</div>;
+        }
 
-  
-    return isAuthenticated ? children : <Navigate to="/" replace />;
-};
+    
+        return isAuthenticated ? children : <Navigate to="/" replace />;
+    };
+   ```
 
+   </details>
 
-   ## Déconnexion : Les utilisateurs peuvent se déconnecter et leur session est invalidée.
+---
 
-    1 controller 
+## Déconnexion : Les utilisateurs peuvent se déconnecter et leur session est invalidée.
 
-    2 route 
+1. **Controller** : Créez un contrôleur qui permet de supprimer le cookie contenant le token JWT pour invalider la session.
 
-    3 front 
+2. **Route** : Créez une route POST `/logout` qui permet aux utilisateurs de se déconnecter.
 
-    	const handleLogout = () => {
-		axios.post('http://localhost:5000/api/auth/logout', {}, { withCredentials: true })
-		navigate("/");
-	  };
+3. **Frontend** : Ajoutez un bouton de déconnexion dans la barre de navigation qui envoie une requête POST à la route `/logout`, puis redirige l'utilisateur vers la page de connexion.
 
-
-
-
+---
 
 Merci d'avoir contribué à la **Wild Chicken School** 🐔!
+
+
+## Remerciements à l'Auteur des Images
+
+Je tiens à remercier chaleureusement l'auteur des images utilisées dans ce projet.
+
+- Les images sont fournies par [cookie_pom_illustration](https://www.instagram.com/cookie_pom_Illustration/).
+- Ces images sont utilisées avec la permission de l'auteur et ne sont pas libres de droit.
+
+Merci à l'auteur pour sa générosité et son autorisation d'utilisation de ses magnifiques images.
