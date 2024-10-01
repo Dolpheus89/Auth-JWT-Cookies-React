@@ -19,23 +19,23 @@ const router = createBrowserRouter([
 				element: <AuthContainer />,
 			},
 			{
-                path: "/page1",
-                element: (
-                    <ProtectedRoute>
-                        <Page1 />
-                    </ProtectedRoute>
-                ),
-            },
-            {
-                path: "/page2",
+				path: "/page1",
 				element: (
-                    <ProtectedRoute>
-                        <Page2 />
-                    </ProtectedRoute>
-                ),
-            },
-        ],
-    },
+					<ProtectedRoute>
+						<Page1 />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/page2",
+				element: (
+					<ProtectedRoute>
+						<Page2 />
+					</ProtectedRoute>
+				),
+			},
+		],
+	},
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

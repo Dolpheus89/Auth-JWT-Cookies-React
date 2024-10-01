@@ -3,13 +3,17 @@ import axios from "axios";
 import "../styles/Navbar.css";
 
 export default function Navbar() {
-	const location = useLocation()
+	const location = useLocation();
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
-		axios.post('http://localhost:5000/api/auth/logout', {}, { withCredentials: true })
+		axios.post(
+			"http://localhost:5000/api/auth/logout",
+			{},
+			{ withCredentials: true },
+		);
 		navigate("/");
-	  };
+	};
 
 	return (
 		<nav>
@@ -24,10 +28,12 @@ export default function Navbar() {
 					<Link to={"/page2"}>Page 2</Link>
 				</li>
 				{location.pathname !== "/" && (
-          <li>
-            <button onClick={handleLogout} type="button">Logout</button>
-          </li>
-        )}
+					<li>
+						<button onClick={handleLogout} type="button">
+							Logout
+						</button>
+					</li>
+				)}
 			</ul>
 		</nav>
 	);
