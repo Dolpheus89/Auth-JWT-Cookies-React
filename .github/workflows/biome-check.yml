@@ -23,6 +23,7 @@ jobs:
 
       - name: Run Biome Check
         run: |
-          npx biome check || (
-            echo "::error::🚨 Formatting issues detected! Please run 'npx biome format' locally to fix them." && exit 1
-          )
+          if ! npx biome check; then
+            echo "::error::🚨 Biome check failed! Please fix formatting issues by running 'npx biome format' locally.";
+            exit 1;
+          fi
