@@ -6,11 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "check-format": "npx @biomejs/biome format './server' './client'",
-    "format": "npx @biomejs/biome format --write './server' './client'"
+    "format": "npx @biomejs/biome format --write './server' './client'",
+    "prepare": "husky"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@biomejs/biome": "^1.9.2"
+    "@biomejs/biome": "^1.9.2",
+    "husky": "^9.1.7"
   }
 }
