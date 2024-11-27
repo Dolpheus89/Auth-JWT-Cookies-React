@@ -10,7 +10,7 @@ export default function Animations() {
 			<span className="shootingStar s5" />
 			<span className="shootingStar s6" />
 			<span className="shootingStar s7" />
-			<span className="shootingStar s8" />
+			    <span className="shootingStar s8" />
 		</>
 	);
 }
