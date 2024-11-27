@@ -1,4 +1,4 @@
-name: biome-check
+name: biome-format
 
 on:  
   pull_request: 
