@@ -17,7 +17,7 @@
 		transform: translateY(-50%);
 		width: 300px;
 		height: 1px;
-		background: linear-gradient(90deg, #fff, transparent);
+		  background: linear-gradient(90deg, #fff, transparent);
 	}
 }
 
