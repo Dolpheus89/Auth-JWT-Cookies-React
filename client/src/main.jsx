@@ -31,7 +31,7 @@ const router = createBrowserRouter([
 				element: (
 					<ProtectedRoute>
 						<Page2 />
-					</ProtectedRoute>
+					  </ProtectedRoute>
 				),
 			},
 		],
