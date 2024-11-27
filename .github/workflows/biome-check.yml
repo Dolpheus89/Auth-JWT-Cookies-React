@@ -23,7 +23,7 @@ jobs:
 
       - name: Run Biome Check
         run: |
-          if ! npm run format; then
+          if ! npm run check-format; then
             echo "::error::🚨 Biome check failed! Please fix formatting issues by running 'npm run format' locally.";
             exit 1;
           fi
