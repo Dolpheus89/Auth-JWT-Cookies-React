@@ -21,9 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Biome Check
+      - name: Run Biome format
         run: |
-          if ! npx biome check; then
-            echo "::error::🚨 Biome check failed! Please fix formatting issues by running 'npx biome format' locally.";
+          if ! npm run format; then
+            echo "::error::🚨 Biome check failed! Please fix formatting issues by running 'npm run format' locally.";
             exit 1;
           fi
