@@ -9,7 +9,7 @@ function App() {
 			<Navbar />
 			<Animations />
 			<div id="pages">
-				<Outlet />
+				   <Outlet />
 			</div>
 		</>
 	);
