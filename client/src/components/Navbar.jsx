@@ -17,7 +17,7 @@ export default function Navbar() {
 
 	return (
 		<nav>
-			<p>
+			      <p>
 				<Link to={"/"}>LoginChicks</Link>
 			</p>
 			<ul>
