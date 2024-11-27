@@ -1,7 +1,8 @@
 name: biome-format
 
 on:  
-  pull_request: 
+  pull_request:
+  push:
 
 jobs:
   biome-format:
