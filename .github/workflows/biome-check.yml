@@ -1,9 +1,6 @@
 name: biome-check
 
-on: 
-  push:
-    branches: 
-      - "*"  
+on:  
   pull_request: 
 
 jobs:
