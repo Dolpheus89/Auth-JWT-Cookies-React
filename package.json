@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "check-format": "npx @biomejs/biome format --check './server' './client'",
     "format": "npx @biomejs/biome format --write './server' './client'"
   },
   "author": "",
